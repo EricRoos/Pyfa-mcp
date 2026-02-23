@@ -324,7 +324,9 @@ def searchItems(nameLike, where=None, join=None, eager=None):
     if not hasattr(join, "__iter__"):
         join = (join,)
 
-    items = get_gamedata_session().query(Item).options(*processEager(eager)).join(*join)
+    items = get_gamedata_session().query(Item).options(*processEager(eager))
+    if join:
+        items = items.join(*join)
     for token in nameLike.split(' '):
         token_safe = "%{0}%".format(sqlizeNormalString(token))
         if where is not None:
@@ -346,7 +348,9 @@ def searchItemsRegex(tokens, where=None, join=None, eager=None):
     if not hasattr(join, "__iter__"):
         join = (join,)
 
-    items = get_gamedata_session().query(Item).options(*processEager(eager)).join(*join)
+    items = get_gamedata_session().query(Item).options(*processEager(eager))
+    if join:
+        items = items.join(*join)
     for token in tokens:
         if where is not None:
             items = items.filter(and_(Item.name.op('regexp')(token), where))

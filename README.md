@@ -32,6 +32,36 @@ The following is a list of pyfa packages available for certain distributions.
 ## Contribution
 If you wish to help with development or you need to run pyfa through a Python interpreter, check out [the instructions](https://github.com/pyfa-org/Pyfa/blob/master/CONTRIBUTING.md).
 
+## Headless MCP Mode (experimental)
+pyfa can run as a headless MCP server over stdio for AI-agent workflows.
+
+Start it with:
+
+```bash
+python pyfa.py --mcp
+```
+
+Current MCP tools:
+
+- `fit.import_text` - import EFT/pyfa copy-paste fit text into an ephemeral in-memory session
+- `hull.get_slot_summary` - return authoritative slot/hardpoint counts for a hull directly from pyfa data
+- `fit.get_stats` - return structured fit stats (DPS, DPS at range, EHP, tank, cap, mobility, fitting resources)
+- `market.get_prices` - expose pyfa cached market price data (price/status/age/validity) for items or an entire fit
+- `fit.set_profiles` - set target profile and/or damage pattern on a fit using pyfa builtins or user-defined profiles
+- `fit.validate_and_explain` - run pyfa validity checks and return actionable reasons if a fit is invalid
+- `fit.optimize_pareto` - tune module states and return Pareto-optimal variants across offense, defense, and mobility metrics
+- `fit.list_modules` - list all module slots (with stable slot indexes) for agent-driven fit edits
+- `fit.compare_slot_candidates` - compare replacement modules for a slot and return score deltas/snapshots
+- `fit.apply_slot_candidate` - apply a chosen replacement to a slot and return updated fit stats
+- `fit.optimize_iterative` - iterate compare/swap loops across slots until objective improvement converges
+- `fit.export_eft` - export any session fit back to EFT text
+
+Notes:
+
+- This mode is headless (no GUI windows) and does not persist fits unless your client exports and saves them.
+- Optimization scope is still constrained to in-fit/manual-like workflows and discovered candidate modules; it does not attempt unrestricted market-wide ship auto-fitting.
+- Agent quality gate: before returning fitting advice to users, agents should run pyfa validation/optimization tools (`fit.get_stats`, `fit.optimize_iterative` and/or `fit.optimize_pareto`) on the candidate fit and report those verified results, not unverified estimates.
+
 ## Bug Reporting
 The preferred method of reporting bugs is through the project's [GitHub Issues interface](https://github.com/pyfa-org/Pyfa/issues). Alternatively, posting a report in the [pyfa thread](https://forums.eveonline.com/t/27156) on the official EVE Online forums is acceptable. Guidelines for bug reporting can be found on [this wiki page](https://github.com/pyfa-org/Pyfa/wiki/Bug-Reporting). 
 
