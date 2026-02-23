@@ -44,7 +44,7 @@ var/
 .installed.cfg
 *.egg
 Pyfa.egg-info/
-eve.db
+./eve.db
 
 # PyInstaller
 #  Usually these files are written by a python script from a template
